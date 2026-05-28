@@ -2,6 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const fs = require("fs");
+const path = require("path");
 const User = require("./models/User");
 
 dotenv.config();
@@ -36,4 +38,22 @@ app.get("/api/health", (req, res) => {
   res.json({ status: "OK", message: "SRMS API is running" });
 });
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+function startServer(port) {
+  const server = app.listen(port);
+  server.on("listening", () => {
+    const actual = server.address().port;
+    console.log(`Server running on port ${actual}`);
+    fs.writeFileSync(path.join(__dirname, ".port"), String(actual));
+  });
+  server.on("error", (err) => {
+    if (err.code === "EADDRINUSE") {
+      console.log(`Port ${port} in use, trying ${port + 1}...`);
+      startServer(port + 1);
+    } else {
+      console.error("Server error:", err);
+      process.exit(1);
+    }
+  });
+}
+
+startServer(PORT);
