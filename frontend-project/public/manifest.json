@@ -1,0 +1,20 @@
+{
+  "short_name": "SalesPro",
+  "name": "SalesPro - Sales Record Management System",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "logo.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#1e40af",
+  "background_color": "#ffffff"
+}
